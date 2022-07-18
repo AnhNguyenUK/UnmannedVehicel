@@ -87,7 +87,8 @@ def getGPS(debug=True):
     num_of_repeat = 5
     gps_data_pattern = ".*CGPSINFO: (.*),([N|S]),(.*),([W|E]),.*"
     for i in range(num_of_repeat):
-        a = str(subprocess.run("chat -V -s '' 'AT+CGPSINFO' 'OK' '' > /dev/ttyS0 < /dev/ttyS0", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
+        a = str(subprocess.run("chat -V -s '' 'AT+CGPSINFO' 'OK' '' > /dev/ttyS0 < /dev/ttyS0",
+                                shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
     if debug == True:
         print(a)
     data = re.findall(gps_data_pattern,str(a))
@@ -111,12 +112,6 @@ def getGPS(debug=True):
 if __name__ == '__main__':
     
     ser = serial.Serial('/dev/ttyS0', 115200, timeout=1)
-    # check info
-    # sendATcommands('AT+CUSD=1,"*101#",15',ser)
-    # sendATcommands('AT+CUSD=1,"*102#",15',ser)
-    # sendATcommands('AT+CUSD=1,"*092#",15',ser)
-    # sendATcommands('AT+CUSD=1,"3",15',ser)
-    # sendATcommands('AT+CUSD=1,"*092#",15',ser)
 
     sendATcommands('AT+CGPS=0',ser)
     sendATcommands('AT+CGPSNMEA=71',ser)
@@ -136,10 +131,5 @@ if __name__ == '__main__':
     # loop_forever for simplicity, here you need to stop the loop manually
     # you can also use loop_start and loop_stop
     client.loop_stop()
-    # print((data["Lat"] < 90) & (data["Lat"]>-90))
-    # regex_pattern = r"Id: (.*),.*: (-?\d+.\d+).*: (-?\d+.\d+)"
-    # for i in range(len(data["Lat"])):
-    #     data_frame = "Id: {}, Lat: {}, Lng: {}".format("Dummy",data["Lat"][i],data["Lng"][i])
-    #     print(data_frame)
-    #     print(re.findall(regex_pattern,data_frame))
+
     

@@ -20,10 +20,11 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 
 # print message, useful for checking if it was successful
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-    regex_pattern = r"Id: (.*),.*: (-?\d+.\d+).*: (-?\d+.\d+)"
-    data = re.findall(regex_pattern, str(msg.payload))
-    print(data[0])    
+    # print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    # regex_pattern = r"Id: (.*),.*: (-?\d+.\d+).*: (-?\d+.\d+)"
+    # data = re.findall(regex_pattern, str(msg.payload))
+    # print(data[0]) 
+    pass   
 
 class HiveMqttServer:
     def __init__(self) -> None:
@@ -45,8 +46,9 @@ class HiveMqttServer:
         return self.password
     
 def print_sth_stupid():
-    while(True):
-        print("No no no")
+    pass
+    # while(True):
+        # print("No no no")
 # using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
 # userdata is user defined data of any type, updated by user_data_set()
 # client_id is the given name of the client
@@ -84,20 +86,29 @@ class mqttHandlingWorker:
 
     # with this callback you can see if your publish was successful
     def on_publish(self, client, userdata, mid, properties=None):
-        print("mid: " + str(mid))
+        # print("mid: " + str(mid))
+        pass
 
     # print which topic was subscribed to
     def on_subscribe(self, client, userdata, mid, granted_qos, properties=None):
         print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
+    # def on_message(self, client, userdata, msg):
+    #     print(str(msg.payload))
+    #     data = msg  
+    #     regex_pattern = r"Id: (.*),.*: (-?\d+.\d+).*: (-?\d+.\d+)"
+    #     data = re.findall(regex_pattern, str(msg.payload))
+    #     q.put(list(data[0]))
+    #     print("Data package: {}".format(data))
+    #     # print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+
     def on_message(self, client, userdata, msg):
         print(str(msg.payload))
         data = msg  
-        regex_pattern = r"Id: (.*),.*: (-?\d+.\d+).*: (-?\d+.\d+)"
-        data = re.findall(regex_pattern, str(msg.payload))
-        q.put(list(data[0]))
-        print("Data package: {}".format(data))
-        # print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+        # regex_pattern = r"Id: (.*),.*: (-?\d+.\d+).*: (-?\d+.\d+)"
+        # data = re.findall(regex_pattern, str(msg.payload))
+        # q.put(list(data[0]))
+        print("Data package: {}".format(['light','on']))
 
     def on_disconnect(self, client, userdata,rc=0):
         print("DisConnected result code "+str(rc))
@@ -122,11 +133,11 @@ if __name__ == '__main__':
     client.on_publish = on_publish
 
     # subscribe to all topics of encyclopedia by using the wildcard "#"
-    client.subscribe("testing", qos=1)
+    client.subscribe("light", qos=1)
 
     # a single publish, this can also be done in loops, etc.
     # for i in range(10):
-    #     client.publish("testing", payload=str(i), qos=1)
+    client.publish("light","on", qos=1)
 
     # loop_forever for simplicity, here you need to stop the loop manually
     # you can also use loop_start and loop_stop

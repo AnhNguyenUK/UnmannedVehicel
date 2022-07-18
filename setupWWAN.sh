@@ -25,7 +25,10 @@ sudo ip link set wwan0 up
 # Connecting to a mobile network 
 counter=0
 echo "Connecting to mobile network"
-until sudo qmicli -p -d /dev/cdc-wdm0 --device-open-net='net-raw-ip|net-no-qos-header' --wds-start-network="apn='internet',ip-type=4" --client-no-release-cid
+until sudo qmicli   -p -d /dev/cdc-wdm0 
+                    --device-open-net='net-raw-ip|net-no-qos-header' 
+                    --wds-start-network="apn='internet',ip-type=4" 
+                    --client-no-release-cid
 do
     sleep 1
     [[ counter -eq $max_retry ]]  && echo "Failed!" && exit 1
